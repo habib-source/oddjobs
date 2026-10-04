@@ -1,0 +1,31 @@
+services:
+  php:
+    restart: always
+    depends_on:
+      - db
+    build:
+      dockerfile: Dockerdevfile
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+    env_file:
+      - .env
+    volumes:
+      - .:/var/www
+    stdin_open: true
+    tty: true
+    ports:
+      - "8000:8000"
+      - "5173:5173"
+  db:
+    restart: always
+    image: postgres:18.2-alpine3.23
+    environment:
+      POSTGRES_DB: oddjobdb
+      POSTGRES_USER: laravel
+      POSTGRES_PASSWORD: web
+    volumes:
+      - database_data:/var/lib/postgresql
+volumes:
+  database_data:
+    driver: local
