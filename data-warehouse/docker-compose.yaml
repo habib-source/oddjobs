@@ -1,0 +1,20 @@
+services:
+  data-warehouse:
+    restart: always
+    image: mcr.microsoft.com/mssql/server:2025-CU9-ubuntu-24.04
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: Dev4oddJob
+      MSSQL_PID: EnterpriseDeveloper
+    env_file:
+      - .dockerenv
+    volumes:
+      - .:/var/www/html
+    stdin_open: true
+    tty: true
+    ports:
+      - "8000:8000"
+      - "5173:5173"
+volumes:
+  database_data:
+    driver: local
