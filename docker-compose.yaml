@@ -17,6 +17,11 @@ services:
     ports:
       - "8000:8000"
       - "5173:5173"
+    healthcheck:
+      test: ["wget --spider -q http://127.0.0.1:5173/up || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
   db:
     restart: always
     image: postgres:18.2-alpine3.23
