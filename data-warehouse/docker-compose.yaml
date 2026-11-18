@@ -8,7 +8,9 @@ services:
       - "7077:7077"
     environment:
       - SPARK_MASTER_HOST=0.0.0.0
-      - SPARK_PUBLIC_DNS=spark
+      - SPARK_PUBLIC_DNS=localhost
+    volumes:
+      - ./oddjobs-etl/:/opt/spark/work-dir
   spark-worker:
     restart: always
     image: spark:4.2.0-scala2.13-java25-python3-ubuntu
@@ -20,11 +22,18 @@ services:
     environment:
       - SPARK_WORKER_CORES=3
       - SPARK_WORKER_MEMORY=2g
-      - SPARK_PUBLIC_DNS=spark-worker
+      - SPARK_PUBLIC_DNS=localhost
+    volumes:
+      - ./oddjobs-etl/:/opt/spark/work-dir
   spark-runner:
     restart: always
     image: spark:4.2.0-scala2.13-java25-python3-ubuntu
     command: /bin/bash
+    # in the container
+    # ../bin/spark-submit --class org.example.App  --master spark://spark:7077 --deploy-mode cluster app/build/libs/app.jar
+    # in the container
+    # ../spark-4.2.1-bin-hadoop3/bin/spark-submit --class org.example.App  --master spark://localhost:7077 --deploy-mode cluster /opt/spark/work-dir/app/build/libs/app.jar
+
     stdin_open: true # Keeps STDIN open (-i)
     tty: true        # Allocates a pseudo-TTY (-t)
     volumes:

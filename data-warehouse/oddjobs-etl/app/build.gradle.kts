@@ -24,6 +24,7 @@ dependencies {
     implementation(libs.scala.library)
 
     implementation("org.apache.spark:spark-core_2.13:4.2.1")
+    implementation("org.apache.spark:spark-sql_2.13:4.2.1")
 
     // This dependency is used by the application.
     implementation(libs.guava)
@@ -35,7 +36,7 @@ tasks.withType<JavaExec>().configureEach {
       "--add-opens=java.base/java.util=ALL-UNNAMED",
       "--add-opens=java.base/java.util.concurrent=ALL-UNNAMED",
       "--sun-misc-unsafe-memory-access=allow",
-      "--enable-native-access=ALL-UNNAMED",
+      "--enable-native-access=ALL-UNNAMED"
     )
 }
 testing {
